@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Clock</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .main-container {
+            width: 400px;
+            height: 150px;
+            border: 5px solid rgb(25, 0, 0);
+            display: flex;
+            align-items: center;
+        }
+
+        .digit-container {
+            width: 15%;
+            height: 80%;
+            margin: 5px;
+            display: grid;
+            grid-template-columns: 10% 70% 10%;
+            grid-template-rows: 4% 44% 4% 44% 4%;
+            grid-row-gap: 1px;
+            grid-column-gap: 1px;
+        }
+
+        .led1,
+        .led2,
+        .led3,
+        .led4,
+        .led5,
+        .led6,
+        .led7 {
+            background: red;
+            border: 1px solid rgba(15, 0, 0);
+            border-radius: 5px;
+        }
+
+        .led1 {
+            grid-column: 2/3;
+        }
+
+        .led2 {
+            grid-column: 1/2;
+        }
+
+        .led3 {
+            grid-column: 3/4;
+        }
+
+        .led4 {
+            grid-column: 2/3;
+        }
+
+        .led5 {
+            grid-column: 1/2;
+        }
+
+        .led6 {
+            grid-column: 3/4;
+        }
+
+        .led7 {
+            grid-column: 2/3;
+        }
+
+        .separator {
+            height: 100%;
+            margin: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+
+        .dot1,
+        .dot2 {
+            width: 5px;
+            height: 5px;
+            background: red;
+            border-radius: 2px;
+        }
+    </style>
+
+    <script>
+
+        function* enumerate(sequence) {
+            let index = 0;
+            for (const item of sequence)
+                yield [index++, item];
+        }
+
+        // state of the led either on or off for the digits same as their index
+        //(for example: index 0 stores the state of LEDs for the digit 0, and so on and so forth..)
+        const state = [
+            [1, 1, 1, 0, 1, 1, 1],
+            [0, 0, 1, 0, 0, 1, 0],
+            [1, 0, 1, 1, 1, 0, 1],
+            [1, 0, 1, 1, 0, 1, 1],
+            [0, 1, 1, 1, 0, 1, 0],
+            [1, 1, 0, 1, 0, 1, 1],
+            [1, 1, 0, 1, 1, 1, 1],
+            [1, 0, 1, 0, 0, 1, 0],
+            [1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 0, 1, 1]
+        ]
+
+
+        function setDigit(digitContainer, num) {
+            //set individual digit
+            elements = digitContainer.querySelectorAll("*");
+            for (const [i, element] of enumerate(elements)) {
+                if (state[Number(num)][i] == 1)
+                    element.style.background = "red";
+                else
+                    element.style.background = "black";
+            }
+        }
+
+        function setTime() {
+            // get current time
+            now = new Date();
+            hour = now.getHours().toString().padStart(2, '0');
+            minute = now.getMinutes().toString().padStart(2, '0');
+            second = now.getSeconds().toString().padStart(2, '0');
+
+            //set/update all digits
+            setDigit(hour1, hour[0]);
+            setDigit(hour2, hour[1]);
+            setDigit(minute1, minute[0]);
+            setDigit(minute2, minute[1]);
+            setDigit(second1, second[0]);
+            setDigit(second2, second[1]);
+        }
+
+        window.onload = setInterval(setTime, 1000); //updates time after every 1 second.
+
+    </script>
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="digit-container" id="hour1">
+            <div class="led1"></div>
+            <div class="led2"></div>
+            <div class="led3"></div>
+            <div class="led4"></div>
+            <div class="led5"></div>
+            <div class="led6"></div>
+            <div class="led7"></div>
+        </div>
+        <div class="digit-container" id="hour2">
+            <div class="led1"></div>
+            <div class="led2"></div>
+            <div class="led3"></div>
+            <div class="led4"></div>
+            <div class="led5"></div>
+            <div class="led6"></div>
+            <div class="led7"></div>
+        </div>
+        <div class="separator">
+            <div class="dot1"></div>
+            <div class="dot2"></div>
+        </div>
+        <div class="digit-container" id="minute1">
+            <div class="led1"></div>
+            <div class="led2"></div>
+            <div class="led3"></div>
+            <div class="led4"></div>
+            <div class="led5"></div>
+            <div class="led6"></div>
+            <div class="led7"></div>
+        </div>
+        <div class="digit-container" id="minute2">
+            <div class="led1"></div>
+            <div class="led2"></div>
+            <div class="led3"></div>
+            <div class="led4"></div>
+            <div class="led5"></div>
+            <div class="led6"></div>
+            <div class="led7"></div>
+        </div>
+        <div class="separator">
+            <div class="dot1"></div>
+            <div class="dot2"></div>
+        </div>
+        <div class="digit-container" id="second1">
+            <div class="led1"></div>
+            <div class="led2"></div>
+            <div class="led3"></div>
+            <div class="led4"></div>
+            <div class="led5"></div>
+            <div class="led6"></div>
+            <div class="led7"></div>
+        </div>
+        <div class="digit-container" id="second2">
+            <div class="led1"></div>
+            <div class="led2"></div>
+            <div class="led3"></div>
+            <div class="led4"></div>
+            <div class="led5"></div>
+            <div class="led6"></div>
+            <div class="led7"></div>
+        </div>
+    </div>
+</body>
+
+</html>
